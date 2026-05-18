@@ -1,13 +1,12 @@
-import time
-
-from game import Game, GameConfig
+from game import Game
+from game_engine import GameConfig
 from utils import format_duration, prompt_menu_choice, prompt_yes_no
 
 
 DIFFICULTY_OPTIONS = {
     "1": GameConfig(name="Easy", max_attempts=None, time_limit=None),
-    "2": GameConfig(name="Normal", max_attempts=12, time_limit=180),
-    "3": GameConfig(name="Hard", max_attempts=8, time_limit=90),
+    "2": GameConfig(name="Normal", max_attempts=10, time_limit=120),
+    "3": GameConfig(name="Hard", max_attempts=8, time_limit=60),
 }
 
 
@@ -33,7 +32,6 @@ def main() -> None:
         game = Game(config=config)
         game.start()
         while not game.is_over:
-            time.sleep(0.1)
             guess = game.prompt_guess()
             if guess is None:
                 break

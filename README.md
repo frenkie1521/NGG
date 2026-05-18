@@ -6,7 +6,7 @@ A simple Python Bulls & Cows safe-cracking game with a Tkinter desktop UI.
 python app.py
 ```
 
-You can also run `python main.py`, which simply launches the Tkinter app.
+You can also run `python main.py` for the terminal (CLI) version.
 
 ## Build standalone desktop app (PyInstaller)
 

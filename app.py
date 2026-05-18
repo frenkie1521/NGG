@@ -4,10 +4,11 @@ import tkinter as tk
 from tkinter import ttk
 
 from game_engine import GameConfig, GameEngine
+from utils import format_duration
 
 
 DIFFICULTY_OPTIONS: dict[str, GameConfig] = {
-    "Easy": GameConfig(name="Easy", max_attempts=15, time_limit=None),
+    "Easy": GameConfig(name="Easy", max_attempts=None, time_limit=None),
     "Normal": GameConfig(name="Normal", max_attempts=10, time_limit=120),
     "Hard": GameConfig(name="Hard", max_attempts=8, time_limit=60),
 }
@@ -98,6 +99,7 @@ class BullsAndCowsApp(tk.Tk):
         self.history_list.insert(
             tk.END, f"{guess} → Bulls: {result.bulls}, Cows: {result.cows}"
         )
+        self.history_list.see(tk.END)
         self.guess_var.set("")
         if self.engine.is_over:
             self._end_game()
@@ -118,6 +120,7 @@ class BullsAndCowsApp(tk.Tk):
         if self.engine.time_expired():
             self.engine.is_over = True
             self.engine.won = False
+            self._update_status_labels()
             self._end_game()
             return
         self._update_status_labels()
@@ -134,7 +137,7 @@ class BullsAndCowsApp(tk.Tk):
         if remaining_seconds is None:
             timer_text = "No time limit"
         else:
-            timer_text = self._format_duration(remaining_seconds)
+            timer_text = format_duration(remaining_seconds)
         self.timer_label.config(text=f"Time remaining: {timer_text}")
 
     def _end_game(self) -> None:
@@ -156,12 +159,6 @@ class BullsAndCowsApp(tk.Tk):
     @staticmethod
     def _is_valid_guess(value: str) -> bool:
         return len(value) == 4 and value.isdigit()
-
-    @staticmethod
-    def _format_duration(seconds: int) -> str:
-        minutes = seconds // 60
-        remaining = seconds % 60
-        return f"{minutes:02d}:{remaining:02d}"
 
 
 def main() -> None:
